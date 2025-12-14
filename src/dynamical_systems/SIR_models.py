@@ -22,7 +22,22 @@ def sir_dynamics_identifiable(t : float,
     
     return np.array([dS, dI, dR])
 
-
+def sir_dynamics_nonIdentifiable(t : float,
+                                 x: np.ndarray,
+                                 theta_dyn: np.ndarray ):
+    """
+    Non-Identifiable SIR dynamics: x = [S, I, R], theta_dyn = [gamma, k, r, delta]
+    """
+    N = 1000.0
+    S, I, R = x
+    gamma, k, r, delta = theta_dyn
+    
+    dS = delta * N - delta * S - gamma * k * S * I
+    dI = gamma * k * S * I - (r + delta) * I
+    dR = r * I - delta * R
+    
+    return np.array([dS, dI, dR])
+    
 def sir_observation_model(x_traj: np.ndarray) -> float:
     """
     Observation model h(x, theta_obs). For this dynamics: observe I(t).
